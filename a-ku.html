@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-image: url('aku.png');
+            background-repeat: repeat;
+            text-align: center;
+            padding-top: 20%;
+            color: white;
+            font-size: 3em;
+        }
+        .moving-image {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            animation: rainbow 5s linear infinite;
+        }
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="image-count">1</div>
+    あーくのお部屋
+    <img class="moving-image"/>
+    <script>
+        function createImage(dx, dy) {
+            var newImg = document.createElement('img');
+            newImg.src = 'akuta.png';
+            newImg.className = 'moving-image';
+            newImg.style.position = 'absolute';
+            newImg.style.width = '200px';
+            newImg.style.height = '290px';
+            newImg.dx = dx;
+            newImg.dy = dy;
+            document.body.appendChild(newImg);
+
+            var audio = new Audio('aku.mp3');
+            audio.loop = true;
+            audio.play();
+
+            newImg.audio = audio; // 画像に音声を関連付けます
+
+            return newImg;
+        }
+
+        function bounce(img) {
+            var x = img.offsetLeft, y = img.offsetTop;
+            var w = window.innerWidth - img.width, h = window.innerHeight - img.height;
+            if (x < 0 || x > w) img.dx = -img.dx;
+            if (y < 0 || y > h) img.dy = -img.dy;
+            img.style.left = (x + img.dx) + 'px';
+            img.style.top = (y + img.dy) + 'px';
+        }
+
+        var img = createImage(100, 100);
+
+        setInterval(function() {
+            var images = document.getElementsByClassName('moving-image');
+            for (var i = 0; i < images.length; i++) {
+                bounce(images[i]);
+            }
+        }, 20);
+
+        setInterval(function() {
+            var dx = Math.random() * 200 - 100;
+            var dy = Math.random() * 200 - 100;
+            createImage(dx, dy);
+            document.getElementById('image-count').textContent = document.getElementsByClassName('moving-image').length;
+        }, 2000);
+
+        setInterval(function() {
+            var bodyStyle = getComputedStyle(document.body);
+            var bgImage = bodyStyle.backgroundImage;
+            var contrast = bodyStyle.filter === 'contrast(100%)' ? 'contrast(0%)' : 'contrast(100%)';
+            document.body.style.backgroundImage = 'url(aku.png)';
+            document.body.style.filter = contrast;
+        }, 3000);
+    </script>
+</body>
+</html>
