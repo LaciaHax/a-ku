@@ -29,7 +29,14 @@
     <script>
         function createImage(dx, dy) {
             var newImg = document.createElement('img');
-            newImg.src = 'akuta.png';
+            var rand = Math.random();
+            if (rand < 0.1) {
+                newImg.src = 'rea.png';
+            } else if (rand < 0.01) {
+                newImg.src = 'tyourea.png';
+            } else {
+                newImg.src = 'akuta.png';
+            }
             newImg.className = 'moving-image';
             newImg.style.position = 'absolute';
             newImg.style.width = '200px';
@@ -66,8 +73,8 @@
         }, 20);
 
         setInterval(function() {
-            var dx = Math.random() * 200 - 100;
-            var dy = Math.random() * 200 - 100;
+            var dx = Math.random() * 100 - 50;
+            var dy = Math.random() * 100 - 50;
             createImage(dx, dy);
             document.getElementById('image-count').textContent = document.getElementsByClassName('moving-image').length;
         }, 2000);
